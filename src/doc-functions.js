@@ -1,12 +1,18 @@
 import $ from 'jquery'
-import { addUpdate } from './sockets';
+import { addUpdate, sendName } from './sockets';
+
 
 
 $(() => {
 
     var input = $('#main-doc');
-
+    let isNameSaved = false;
     input.on('keydown', (event) => {
+        if (!isNameSaved) {
+            sendName($("#userInput").val());
+            isNameSaved = true;
+        }
+
         var key = event.keyCode || event.charCode;
         if (key == 8 || key == 46) {
 
@@ -35,7 +41,14 @@ $(() => {
 
     })
 })
+const addViewingUser = (newUser) => {
+    let viewingUser = $("#viewingUsers");
+    let user = $('#userInput').val();
+    viewingUser.append("<p>" + newUser.userName + "</p>");
 
+
+
+}
 const update = (updateData) => {
     let textArea = $('#main-doc');
     let user = $('#userInput').val();
@@ -67,4 +80,4 @@ const update = (updateData) => {
     }
 }
 
-export { update }
+export { update, addViewingUser }
