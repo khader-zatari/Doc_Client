@@ -4,7 +4,7 @@ import { Stomp } from '@stomp/stompjs';
 
 
 import { serverAddress } from "./constants"
-import { update } from './doc-functions';
+import { update, addViewingUser } from './doc-functions';
 let stompClient;
 const socketFactory = () => {
     return new SockJS(serverAddress + '/ws');
@@ -15,12 +15,15 @@ const onMessageReceived = (payload) => {
     console.log(message);
     update(message);
 }
-
+const newUserViewing = (payload) => {
+    var user = JSON.parse(payload.body);
+    console.log(user);
+    addViewingUser(user);
+}
 const onConnected = () => {
     stompClient.subscribe('/topic/updates', onMessageReceived);
-    stompClient.send("/app/hello", [],
-        JSON.stringify({ name: "Default user" })
-    )
+    stompClient.subscribe('/topic/usersJoin', newUserViewing);
+
 }
 
 const openConnection = () => {
@@ -29,17 +32,22 @@ const openConnection = () => {
     stompClient.connect({}, onConnected);
 }
 
-const addUpdate = (user, content, position) => {
-    sendUpate(user, "APPEND", content, position)
+const addUpdate = (user, updateType, content, startPosition, endPosition) => {
+    sendUpate(user, updateType, content, startPosition, endPosition)
 }
-
-const sendUpate = (user, type, content, position) => {
+const sendName = (userName) => {
+    stompClient.send("/app/join", [], JSON.stringify({
+        userName: userName
+    }))
+}
+const sendUpate = (user, type, content, startPosition, endPosition) => {
     stompClient.send("/app/update", [], JSON.stringify({
         user: user,
         type: type,
         content: content,
-        position: position
+        startPosition: startPosition,
+        endPosition: endPosition,
     }))
 }
 
-export { openConnection, addUpdate }
+export { openConnection, addUpdate, sendName }
