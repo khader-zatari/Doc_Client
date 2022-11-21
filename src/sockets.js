@@ -12,7 +12,6 @@ const socketFactory = () => {
 
 const onMessageReceived = (payload) => {
     var message = JSON.parse(payload.body);
-    console.log(message);
     update(message);
 }
 const newUserViewing = (payload) => {
