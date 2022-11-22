@@ -16,7 +16,7 @@ const onMessageReceived = (payload) => {
 }
 const newUserViewing = (payload) => {
     var user = JSON.parse(payload.body);
-    console.log(user);
+    console.log("all the active viewing users are",user);
     addViewingUser(user);
 }
 const onConnected = () => {

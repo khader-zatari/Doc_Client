@@ -17,7 +17,12 @@ $(() => {
     let start;
     let end;
     let didIdelete = false;
+    let nameIsSent = false;
     input.on('keydown', (event) => {
+        if (!nameIsSent) {
+            sendName($("#userInput").val());
+            nameIsSent = true;
+        }
         start = input.prop("selectionStart");
         end = input.prop("selectionEnd");
         var key = event.keyCode || event.charCode;
@@ -57,9 +62,17 @@ $(() => {
 
 })
 
-const addViewingUser = (newUser) => {
+const addViewingUser = (viewingUsers) => {
+
+    let viewingUser = $("#viewingUsers");
+    let user = $('#userInput').val();
+    // viewingUsers.forEach((user, i) => viewingUser.html("<p>" + user + "</p>"));
+    console.log(viewingUsers);
+    // viewingUser.html("<p>" + viewingUser + "</p>")
+
 
 }
+
 const update = (updateData) => {
     let textArea = $('#main-doc');
     let user = $('#userInput').val();
