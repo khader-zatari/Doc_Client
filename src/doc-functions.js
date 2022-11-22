@@ -23,9 +23,14 @@ $(() => {
         var key = event.keyCode || event.charCode;
         if (key == 8 || key == 46) {
             console.log("in delelte and the start is", start - 1, " and the end is ", end - 1);
-            if (start - 1 >= 0 && end - 1 >= 0) {
+            if (start - 1 >= -1 && end - 1 >= 0) {
                 console.log("in delete");
-                addUpdate($('#userInput').val(), "DELETE", null, start - 1, end - 1);
+                if (start == end) {
+                    addUpdate($('#userInput').val(), "DELETE", null, start - 1, end - 1);
+                }
+                else {
+                    addUpdate($('#userInput').val(), "DELETE_RANGE", null, start - 1, end - 1);
+                }
                 didIdelete = true;
             }
 
@@ -69,7 +74,7 @@ const update = (updateData) => {
 
             }
         }
-        else {
+        else if (updateData.updateType == "DELETE") {
             if (updateData.startPosition < start) {
                 start = start - (updateData.endPosition - updateData.startPosition + 1);
                 console.log(start);
@@ -79,6 +84,24 @@ const update = (updateData) => {
                 textArea[0].setSelectionRange(start, start);
 
             }
+        }
+        else if (updateData.updateType == "DELETE_RANGE") {
+            if (updateData.startPosition < start - 1 && updateData.endPosition < start - 1) {
+                start = start - (updateData.endPosition - updateData.startPosition);
+                console.log(start);
+                console.log("the pointor is moved to the left" + start);
+                textArea[0].setSelectionRange(start, start);
+            } else if (updateData.startPosition < start - 1 && updateData.endPosition > start - 1) {
+                start = start - (start - updateData.startPosition) + 1;
+                console.log(start);
+                console.log("the pointor is moved to the left" + start);
+                textArea[0].setSelectionRange(start, start);
+            }
+            else {
+                textArea[0].setSelectionRange(start, start);
+
+            }
+
         }
     }
 }
