@@ -44,7 +44,12 @@ $(() => {
         if (!didIdelete) {
             console.log(didIdelete);
             console.log("iam adding and the start is ", start - 1, "and the end is ", end - 1);
-            addUpdate($('#userInput').val(), "APPEND", event.originalEvent.data, end, end)
+            if (start == end) {
+                addUpdate($('#userInput').val(), "APPEND", event.originalEvent.data, end, end);
+            }
+            else {
+                addUpdate($('#userInput').val(), "APPEND_RANGE", event.originalEvent.data, start - 1, end - 1)
+            }
         }
         didIdelete = false;
     })
@@ -85,7 +90,7 @@ const update = (updateData) => {
 
             }
         }
-        else if (updateData.updateType == "DELETE_RANGE") {
+        else if (updateData.updateType == "DELETE_RANGE" || updateData.updateType == "APPEND_RANGE") {
             if (updateData.startPosition < start - 1 && updateData.endPosition < start - 1) {
                 start = start - (updateData.endPosition - updateData.startPosition);
                 console.log(start);
