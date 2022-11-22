@@ -10,24 +10,40 @@ $(() => {
 
     var input = $('#main-doc');
     let isNameSaved = false;
-    input.on('keydown', (event) => {
 
+    console.log("before");
+    console.log(input.prop("selectionStart"));
+    console.log(input.prop("selectionEnd"));
+    let start;
+    let end;
+    let didIdelete = false;
+    input.on('keydown', (event) => {
+        start = input.prop("selectionStart");
+        end = input.prop("selectionEnd");
         var key = event.keyCode || event.charCode;
         if (key == 8 || key == 46) {
-            let start = input.prop("selectionStart")
-            let end = input.prop("selectionEnd");
             console.log("in delelte and the start is", start - 1, " and the end is ", end - 1);
-            addUpdate($('#userInput').val(), "DELETE", null, start - 1, end - 1);
+            if (start - 1 >= 0 && end - 1 >= 0) {
+                console.log("in delete");
+                addUpdate($('#userInput').val(), "DELETE", null, start - 1, end - 1);
+            }
+            didIdelete = true;
+
         }
 
     });
 
     input.on("input", (event) => {
-        let start = input.prop("selectionStart")
-        let end = input.prop("selectionEnd");
-        console.log("iam adding and the start is ", start - 1, "and the end is ", end - 1);
-        addUpdate($('#userInput').val(), "APPEND", event.originalEvent.data, end - 1, end - 1)
+        console.log("in input and the didIdelete", didIdelete);
+        if (!didIdelete) {
+            console.log(didIdelete);
+            console.log("iam adding and the start is ", start - 1, "and the end is ", end - 1);
+            addUpdate($('#userInput').val(), "APPEND", event.originalEvent.data, end, end)
+        }
+        didIdelete = false;
     })
+
+
 })
 
 const addViewingUser = (newUser) => {
@@ -40,15 +56,28 @@ const update = (updateData) => {
     if (user != updateData.userName) {
         textArea.val(updateData.documentText);
 
+        if (updateData.updateType == "APPEND") {
 
-        if (updateData.startPosition < start) {
-            start = start + (updateData.endPosition - updateData.startPosition + 1);
-            console.log(start);
-            console.log("the pointor is moved to " + start);
-            textArea[0].setSelectionRange(start, start);
-        } else {
-            textArea[0].setSelectionRange(start, start);
+            if (updateData.startPosition < start) {
+                start = start + (updateData.endPosition - updateData.startPosition + 1);
+                console.log(start);
+                console.log("the pointor is moved to " + start);
+                textArea[0].setSelectionRange(start, start);
+            } else {
+                textArea[0].setSelectionRange(start, start);
 
+            }
+        }
+        else {
+            if (updateData.startPosition < start) {
+                start = start - (updateData.endPosition - updateData.startPosition + 1);
+                console.log(start);
+                console.log("the pointor is moved to the left" + start);
+                textArea[0].setSelectionRange(start, start);
+            } else {
+                textArea[0].setSelectionRange(start, start);
+
+            }
         }
     }
 }
