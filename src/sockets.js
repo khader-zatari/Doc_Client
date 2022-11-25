@@ -22,7 +22,7 @@ const newUserViewing = (payload) => {
 }
 const onConnected = () => {
     stompClient.subscribe('/topic/updates/' + docId, onMessageReceived);
-    stompClient.subscribe('/topic/usersJoin', newUserViewing);
+    stompClient.subscribe('/topic/usersJoin/' + docId, newUserViewing);
 
 }
 
@@ -36,7 +36,7 @@ const addUpdate = (user, updateType, content, startPosition, endPosition) => {
     sendUpate(user, updateType, content, startPosition, endPosition)
 }
 const sendName = (userName) => {
-    stompClient.send("/app/join", [], JSON.stringify({
+    stompClient.send("/app/join/" + docId, [], JSON.stringify({
         userName: userName
     }))
 }

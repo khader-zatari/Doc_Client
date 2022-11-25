@@ -17,16 +17,13 @@ const getDocument = (docId) => {
     mode: 'no-cors',
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
       'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS,GET',
 
     }
   }).then((respons) => {
-    console.log("the file content is ", respons.body);
+    console.log("the file content is ", respons);
     return respons.body;
-  }).catch(() => {
-
-  })
+  });
 }
 const changeUserRole = (docId, userId, ownerId, userRole) => {
 

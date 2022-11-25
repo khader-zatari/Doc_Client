@@ -8,9 +8,9 @@ let isDelete = false;
 
 
 $(() => {
-    let docContent = getDocument(6);
+    
     var input = $('#main-doc');
-
+    let docContent = getDocument(6);
 
     input.val(docContent);
     let isNameSaved = false;
@@ -69,10 +69,10 @@ $(() => {
 const addViewingUser = (viewingUsers) => {
 
     let viewingUser = $("#viewingUsers");
-    let user = $('#userInput').val();
-    // viewingUsers.forEach((user, i) => viewingUser.html("<p>" + user + "</p>"));
+    let thisUser = $('#userInput').val();
+    viewingUsers.filter((user)=> user != thisUser ).forEach((user, i) => viewingUser.html("<p>" + user + "</p>"));
     console.log(viewingUsers);
-    // viewingUser.html("<p>" + viewingUser + "</p>")
+    
 
 
 }
