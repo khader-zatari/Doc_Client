@@ -5,6 +5,7 @@ import { Stomp } from '@stomp/stompjs';
 
 import { serverAddress } from "./constants"
 import { update, addViewingUser } from './doc-functions';
+let docId = 6;
 let stompClient;
 const socketFactory = () => {
     return new SockJS(serverAddress + '/ws');
@@ -16,11 +17,11 @@ const onMessageReceived = (payload) => {
 }
 const newUserViewing = (payload) => {
     var user = JSON.parse(payload.body);
-    console.log("all the active viewing users are",user);
+    console.log("all the active viewing users are", user);
     addViewingUser(user);
 }
 const onConnected = () => {
-    stompClient.subscribe('/topic/updates', onMessageReceived);
+    stompClient.subscribe('/topic/updates/' + docId, onMessageReceived);
     stompClient.subscribe('/topic/usersJoin', newUserViewing);
 
 }
@@ -40,7 +41,7 @@ const sendName = (userName) => {
     }))
 }
 const sendUpate = (user, type, content, startPosition, endPosition) => {
-    stompClient.send("/app/update", [], JSON.stringify({
+    stompClient.send("/app/update/" + docId, [], JSON.stringify({
         user: user,
         type: type,
         content: content,

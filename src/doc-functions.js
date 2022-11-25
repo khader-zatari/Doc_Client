@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import { getDocument } from './rest';
 import { addUpdate, sendName } from './sockets';
 
 let isDelete = false;
@@ -7,8 +8,11 @@ let isDelete = false;
 
 
 $(() => {
-
+    let docContent = getDocument(6);
     var input = $('#main-doc');
+
+
+    input.val(docContent);
     let isNameSaved = false;
 
     console.log("before");
