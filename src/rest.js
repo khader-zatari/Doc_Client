@@ -1,8 +1,12 @@
 import { serverAddress } from "./constants";
 import { update } from "./doc-functions";
+import { redirect } from "./router";
 
+
+//--Registration-----------------------------------------------------------------------------------
 const createUser = (user) => {
-  fetch(serverAddress + "/user", {
+  console.log("REST-REGISTER- START...");
+  fetch(serverAddress + "/auth/register", {
     method: "POST",
     body: JSON.stringify({
       name: user.name,
@@ -11,9 +15,52 @@ const createUser = (user) => {
     }),
     headers: {
       "Content-Type": "application/json",
-    },
-  });
-};
+    }
+  }).then((res => {
+    let data = res.json();
+    console.log(data);
+    redirect("/login");
+//-----catches- need to edit-------------------------------
+    data.then(function (result) {
+    let msg = result.message;
+    console.log(msg);
+    if (msg == undefined) {
+        addSuccessLabel(result);
+        disableSignup();
+    }
+    else
+     console.log(msg);
+     });
+  })).catch ((error) => {
+    console.error(error);})
+}
+
+
+
+
+//--Login-----------------------------------------------------------------------------------
+const loginUser = (user) => {
+
+  console.log("REST-LOGIN- START...");
+  fetch(serverAddress + "/auth/login", {
+    method: "POST",
+    body: JSON.stringify({
+      email: user.email,
+      password: user.password,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    }
+  }).then((res => {
+    let data = res.json();
+    console.log(data);
+    //redirect("/login");
+  }))
+}
+
+
+
+
 
 const getDocument = (docId) => {
   fetch(serverAddress + "/doc/" + docId, {
@@ -41,9 +88,8 @@ const changeUserRole = (docId, userId, ownerId, userRole) => {
     .catch(() => {});
 };
 
-//Sharon's
 
-export { createUser, getDocument, changeUserRole };
+export { createUser, getDocument, changeUserRole, loginUser };
 
 /**
  * 

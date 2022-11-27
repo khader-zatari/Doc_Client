@@ -5,11 +5,18 @@ const route = (event) => {
   handleLocation();
 };
 
+const redirect = (page)=>{
+  window.history.pushState({}, "",page);
+  handleLocation();
+}
+
+
+
 const routes = {
   404: "templates/404.html",
   "/": "templates/home.html",
-  "/about": "templates/about.html",
-  "/lorem": "templates/lorem.html",
+  "/register": "templates/register.html",
+  "/login": "templates/login.html",
 };
 
 const handleLocation = async () => {
@@ -24,4 +31,4 @@ window.route = route;
 
 handleLocation();
 
-export { route, routes, handleLocation };
+export { route, routes, handleLocation ,redirect};
