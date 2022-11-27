@@ -1,43 +1,49 @@
-import { serverAddress } from "./constants"
-import { update } from "./doc-functions"
+import { serverAddress } from "./constants";
+import { update } from "./doc-functions";
 
 const createUser = (user) => {
   fetch(serverAddress + "/user", {
-    method: 'POST',
-    body: JSON.stringify({ name: user.name, email: user.email, password: user.password }),
+    method: "POST",
+    body: JSON.stringify({
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    }),
     headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-}
+      "Content-Type": "application/json",
+    },
+  });
+};
 
 const getDocument = (docId) => {
   fetch(serverAddress + "/doc/" + docId, {
-    method: 'GET',
-    mode: 'no-cors',
+    method: "GET",
+    mode: "no-cors",
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS,GET',
-
-    }
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,PATCH,OPTIONS,GET",
+    },
   }).then((respons) => {
     console.log("the file content is ", respons);
     return respons.body;
   });
-}
+};
 const changeUserRole = (docId, userId, ownerId, userRole) => {
-
   fetch(serverAddress + "/doc/" + docId, {
     method: update,
-    body: JSON.stringify({ userId: userId, ownerId: ownerId, userRole: userRole }),
-  }).then(() => {
+    body: JSON.stringify({
+      userId: userId,
+      ownerId: ownerId,
+      userRole: userRole,
+    }),
+  })
+    .then(() => {})
+    .catch(() => {});
+};
 
-  }).catch(() => {
+//Sharon's
 
-  });
-}
-
-export { createUser, getDocument, changeUserRole }
+export { createUser, getDocument, changeUserRole };
 
 /**
  * 

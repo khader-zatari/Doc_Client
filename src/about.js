@@ -1,2 +1,5 @@
-console.log("iam in about class");
-document.getElementById("title").setAttribute('color', "#FFF");
+const sayHi = () => {
+  console.log("Hello in about from src");
+};
+
+export { sayHi };
