@@ -4,7 +4,9 @@ import { openConnection } from "./sockets";
 import { route, routes, handleLocation } from "./router";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { sayHi } from "./about";
+import { sayHi } from "./register";
+import {loginUser} from "./rest"
+
 //EVERYTHING THAT WE WRITE IN ANOTHER JS FILES SHOULD BE IMPORTED TO HERE!
 //ALL FUNCTIONS IN THE JS FILES SHOULD BE EXPORTED.
 
@@ -15,14 +17,32 @@ $(() => {
 });
 
 $(() => {
-  $(document).on("submit", () => {
+  $(document).on("submit", (e) => {
+    e.preventDefault();
     const user = {
-      email: $("#emailInput").val(),
-      name: $("#userInput").val(),
-      password: $("#passwordInput").val(),
+      email: $("#email").val(),
+      name: $("#name").val(),
+      password: $("#password").val(),
     };
+    console.log(user);
     createUser(user);
-  });
+  })
 });
+
+
+$(() => {
+  $(document).on("submit", (e) => {
+    e.preventDefault();
+    const user = {
+      email: $("#emailLogin").val(),
+      password: $("#passwordLogin").val(),
+    };
+    console.log(user);
+    loginUser(user);
+  })
+});
+
+
+
 
 openConnection();
