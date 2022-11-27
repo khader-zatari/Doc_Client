@@ -8,16 +8,14 @@ const route = (event) => {
 const routes = {
   404: "templates/404.html",
   "/": "templates/home.html",
-  "/aobut": "templates/about.html",
+  "/about": "templates/about.html",
   "/lorem": "templates/lorem.html",
 };
 
 const handleLocation = async () => {
   const path = window.location.pathname;
   const route = routes[path] || routes[404];
-  console.log(route);
   const html = await fetch(route).then((data) => data.text());
-  //console.log("page content:" + html);
   document.getElementById("main-page").innerHTML = html;
 };
 
