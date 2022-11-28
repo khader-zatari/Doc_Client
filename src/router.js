@@ -1,3 +1,4 @@
+import { getChildren } from "./my_docs rest";
 const route = (event) => {
   event = event || window.event;
   event.preventDefault();
@@ -15,15 +16,23 @@ const routes = {
   "/": "templates/home.html",
   "/register": "templates/register.html",
   "/login": "templates/login.html",
-  "/my_docs": "templates/my_docs.html",
+  "/my_docs": {
+    url: "templates/my_docs.html",
+    action: () => {
+      getChildren(1);
+    },
+  },
   "/editing_doc": "templates/editing_doc.html",
 };
 
 const handleLocation = async () => {
   const path = window.location.pathname;
-  const route = routes[path] || routes[404];
-  const html = await fetch(route).then((data) => data.text());
+  const route = routes[path].url || routes[404];
+  const html = await fetch(route).then((data) => data.text()
+  );
+  
   document.getElementById("main-page").innerHTML = html;
+  routes[path].action();
 };
 
 window.onpopstate = handleLocation;
