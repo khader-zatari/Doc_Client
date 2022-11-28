@@ -12,44 +12,17 @@ import { getDocument } from "./rest";
 //EVERYTHING THAT WE WRITE IN ANOTHER JS FILES SHOULD BE IMPORTED TO HERE!
 //ALL FUNCTIONS IN THE JS FILES SHOULD BE EXPORTED.
 
-$(() => {
-  //this doesnt work because the DOM
-  //of my_docs is not recognized
-  getChildren(1);
-});
-
-$(() => {
-  getDocument(4);
-});
-
 // $(() => {
-//   $(document).on("submit", (e) => {
-//     e.preventDefault();
-//     const user = {
-//       email: $("#email").val(),
-//       name: $("#name").val(),
-//       password: $("#password").val(),
-//     };
-//     console.log(user);
-//     createUser(user);
-//   });
+//   //this doesnt work because the DOM
+//   //of my_docs is not recognized
+//   getChildren(1);
 // });
 
-//--------------Login-------------
-$(() => {
-  $(document).on("submit", (e) => {
-    e.preventDefault();
-    const user = {
-      email: $("#email").val(),
-      password: $("#password").val(),
-    };
-    console.log("IN LOGIN");
-    console.log(user);
-    e.preventDefault();
-    userLogin(user);
-  });
-});
-//---------------------------------
+// $(() => {
+//   getDocument(4);
+// });
+
+
 
 //--Sockets-------------------------------------
 openConnection();

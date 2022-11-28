@@ -2,6 +2,8 @@ import { getChildren } from "./my_docs rest";
 import { startEditingDoc } from "./doc-functions";
 import { getDocument } from "./rest";
 import $ from "jquery";
+import { initRegister } from "./register";
+import { initLogin } from "./login";
 
 const route = (event) => {
   event = event || window.event;
@@ -22,9 +24,22 @@ const redirectToDoc = (page, docId) => {
 
 const routes = {
   404: "templates/404.html",
-  "/": "templates/home.html",
-  "/register": "templates/register.html",
-  "/login": "templates/login.html",
+  "/": {
+    url: "templates/home.html",
+    action: () => {},
+  },
+  "/register": {
+    url: "templates/register.html",
+    action: () => {
+      initRegister();
+    },
+  },
+  "/login": {
+    url: "templates/login.html",
+    action: () => {
+      initLogin();
+    },
+  },
   "/my_docs": {
     url: "templates/my_docs.html",
     action: () => {
