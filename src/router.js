@@ -16,6 +16,7 @@ const routes = {
   "/register": "templates/register.html",
   "/login": "templates/login.html",
   "/my_docs": "templates/my_docs.html",
+  "/editing_doc": "templates/editing_doc.html",
 };
 
 const handleLocation = async () => {

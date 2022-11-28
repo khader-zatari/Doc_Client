@@ -65,9 +65,11 @@ const getDocument = (docId) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST,PATCH,OPTIONS,GET",
     },
-  }).then((respons) => {
-    console.log("the file content is ", respons);
-    return respons.body;
+  }).then((response) => {
+    //console.log("the file content is ", response);
+    return response.body;
+  }).then ((data) => {
+    console.log(data);
   });
 };
 const changeUserRole = (docId, userId, ownerId, userRole) => {
