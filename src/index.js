@@ -8,6 +8,7 @@ import { sayHi } from "./register";
 import { serverAddress } from "./constants";
 import { getChildren } from "./my_docs rest";
 import { getDocument } from "./rest";
+import "./_custom.css";
 
 //EVERYTHING THAT WE WRITE IN ANOTHER JS FILES SHOULD BE IMPORTED TO HERE!
 //ALL FUNCTIONS IN THE JS FILES SHOULD BE EXPORTED.
@@ -21,8 +22,6 @@ import { getDocument } from "./rest";
 // $(() => {
 //   getDocument(4);
 // });
-
-
 
 //--Sockets-------------------------------------
 openConnection();
