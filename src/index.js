@@ -1,48 +1,54 @@
 import $ from "jquery";
-import { createUser } from "./rest";
+import { createUser, userLogin } from "./rest";
 import { openConnection } from "./sockets";
 import { route, routes, handleLocation } from "./router";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { sayHi } from "./register";
-import {loginUser} from "./rest"
+import { serverAddress } from "./constants";
+import { getChildren } from "./my_docs rest";
+import { getDocument } from "./rest";
 
 //EVERYTHING THAT WE WRITE IN ANOTHER JS FILES SHOULD BE IMPORTED TO HERE!
 //ALL FUNCTIONS IN THE JS FILES SHOULD BE EXPORTED.
 
 $(() => {
-  $(window).on("load", () => {
-    sayHi();
-  });
+  //this doesnt work because the DOM
+  //of my_docs is not recognized
+  getChildren(1);
 });
 
+// $(() => {
+//   $(document).on("submit", (e) => {
+//     e.preventDefault();
+//     const user = {
+//       email: $("#email").val(),
+//       name: $("#name").val(),
+//       password: $("#password").val(),
+//     };
+//     console.log(user);
+//     createUser(user);
+//   });
+// });
+
+//--------------Login-------------
 $(() => {
   $(document).on("submit", (e) => {
     e.preventDefault();
     const user = {
       email: $("#email").val(),
-      name: $("#name").val(),
       password: $("#password").val(),
     };
+    console.log("IN LOGIN");
     console.log(user);
-    createUser(user);
-  })
-});
-
-
-$(() => {
-  $(document).on("submit", (e) => {
     e.preventDefault();
-    const user = {
-      email: $("#emailLogin").val(),
-      password: $("#passwordLogin").val(),
-    };
-    console.log(user);
-    loginUser(user);
-  })
+    userLogin(user);
+  });
 });
+//---------------------------------
 
-
-
-
+// $(() => {
+//   getDocument(6);
+// });
+//--Sockets-------------------------------------
 openConnection();
