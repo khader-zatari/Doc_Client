@@ -6,11 +6,11 @@ let isDelete = false;
 const startEditingDoc = (docId) => {
   getDocument(docId)
     .then((data) => {
-      console.log("data is", data);
-      $("#doc-id").text(docId);
-      // $("#doc-title").text("put title here");
-      // $("#doc-last-editede").text("put last edited here");
-      $("#main-doc-content").text(data);
+      console.log("data id", data.id);
+      $("#doc-id").text(data.id);
+      $("#doc-title").text(data.name);
+      $("#doc-last-edited").text(data.lastEdited);
+      $("#main-doc-content").text(data.content);
       //input.val = data;
       let start;
       let end;

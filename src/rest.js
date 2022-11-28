@@ -61,9 +61,9 @@ const getDocument = (docId) => {
   return new Promise((resolve, reject) => {
     fetch(serverAddress + "/doc/" + docId, {
       method: "GET",
-    }).then(response => response.text())
+    })
       .then((response) => {
-        return resolve(response);
+        return resolve(response.json());
       })
       .catch(err => reject(err))
   })
