@@ -60,18 +60,23 @@ const userLogin = (user) => {
 const getDocument = (docId) => {
   fetch(serverAddress + "/doc/" + docId, {
     method: "GET",
-    mode: "no-cors",
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST,PATCH,OPTIONS,GET",
-    },
-  }).then((response) => {
-    //console.log("the file content is ", response);
-    return response.body;
-  }).then ((data) => {
-    console.log(data);
-  });
+    // mode: "no-cors",
+    // headers: {
+    //   "Access-Control-Allow-Origin": "*",
+    //   "Access-Control-Allow-Methods": "POST,PATCH,OPTIONS,GET",
+    // },
+  })
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
+    .then((data) => {
+      console.log("the file content is ", data.text());
+    }).then ((second) => {
+      console.log(second)
+    });
 };
+
 const changeUserRole = (docId, userId, ownerId, userRole) => {
   fetch(serverAddress + "/doc/" + docId, {
     method: update,

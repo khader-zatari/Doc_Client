@@ -1,7 +1,9 @@
+import $ from "jquery";
+
 import { serverAddress } from "./constants";
 const test = document.getElementById("test");
 console.log(test);
-const ull = document.getElementById("ull");
+const ull = $("#ull");
 const list = document.createDocumentFragment();
 const getChildren = (id) => {
   console.log("GETTING CHILDREN OF INODE" + id);
@@ -15,6 +17,7 @@ const getChildren = (id) => {
     },
   })
     .then((response) => {
+      console.log(response);
       return response.json();
     })
     .then((data) => {
@@ -22,8 +25,28 @@ const getChildren = (id) => {
       console.log(inodes);
       console.log("ULL " + ull);
       inodes.map(function (inode) {
+        
         let li = document.createElement("li");
-        let name = document.createElement("h5");
+        li.setAttribute("id", `${inode.id}`);
+        li.setAttribute("class", `${inode.type}`);
+        li.onclick = function () {
+          console.log(
+            "inode clicked " +
+              li.getAttribute("id") +
+              " type: " +
+              li.getAttribute("class")
+          );
+
+          if (li.getAttribute("class") == "DIR") {
+            $("#ull").empty(); //delete all li's
+            getChildren(li.getAttribute("id"));
+          } else {
+            //FILE
+            //open document
+          }
+        };
+
+        let name = document.createElement("span");
         let type = document.createElement("span");
 
         name.innerHTML = `${inode.name}`;
@@ -37,7 +60,7 @@ const getChildren = (id) => {
     .catch((error) => {
       console.error(`ERROR: ${error}`);
     });
-  //ull.appendChild(list);
+  $("#ull").append(list);
 };
 
 export { getChildren };
