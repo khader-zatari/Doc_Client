@@ -25,11 +25,25 @@ const getChildren = (id) => {
       console.log(inodes);
       console.log("ULL " + ull);
       inodes.map(function (inode) {
+        
         let li = document.createElement("li");
         li.setAttribute("id", `${inode.id}`);
         li.setAttribute("class", `${inode.type}`);
         li.onclick = function () {
-          console.log("inode clicked " + li.getAttribute("id"));
+          console.log(
+            "inode clicked " +
+              li.getAttribute("id") +
+              " type: " +
+              li.getAttribute("class")
+          );
+
+          if (li.getAttribute("class") == "DIR") {
+            $("#ull").empty(); //delete all li's
+            getChildren(li.getAttribute("id"));
+          } else {
+            //FILE
+            //open document
+          }
         };
 
         let name = document.createElement("span");
