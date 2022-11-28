@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.7.2",
+    "file-loader": "^6.2.0",
     "node-sass": "^8.0.0",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
@@ -21,7 +22,8 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^6.1.2",
-    "bootstrap": "^5.2.1",
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.2",
     "jquery": "^3.6.1",
     "sockjs": "^0.3.24",
     "sockjs-client": "^1.6.1",
