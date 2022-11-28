@@ -7,11 +7,20 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>EDITING DOC</h1>
-
-    <div id="viewingUsers"></div>
-    <div class="col-9">
-      <textarea class="form-control" id="main-doc" rows="20"></textarea>
+    <h1>EDITING DOC PAGE</h1>
+    <h3>DOC ID <span id="doc-id"></span></h3>
+    <h2>Title: <span id="doc-title"></span></h2>
+    <h6>Last edited: <span id="doc-last-edited"></span></h6>
+    <ul id="viewingUsers"></ul>
+    <div><input type="text" id="userInput" /></div>
+    <div>
+      <div class="col-6">
+        <textarea
+          class="form-control"
+          id="main-doc-content"
+          rows="20"
+        ></textarea>
+      </div>
     </div>
   </body>
 </html>

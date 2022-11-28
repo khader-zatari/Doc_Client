@@ -1,4 +1,8 @@
 import { getChildren } from "./my_docs rest";
+import { startEditingDoc } from "./doc-functions";
+import { getDocument } from "./rest";
+import $ from "jquery";
+
 const route = (event) => {
   event = event || window.event;
   event.preventDefault();
@@ -9,6 +13,11 @@ const route = (event) => {
 const redirect = (page) => {
   window.history.pushState({}, "", page);
   handleLocation();
+};
+
+const redirectToDoc = (page, docId) => {
+  window.history.pushState({}, "", page);
+  handleLocationWithDoc(docId);
 };
 
 const routes = {
@@ -22,15 +31,28 @@ const routes = {
       getChildren(1);
     },
   },
-  "/editing_doc": "templates/editing_doc.html",
+  "/editing_doc": {
+    url: "templates/editing_doc.html",
+    action: (id) => {
+      startEditingDoc(id);
+    },
+  },
+};
+
+const handleLocationWithDoc = async (docId) => {
+  const path = window.location.pathname;
+  const route = routes[path].url || routes[404];
+  const html = await fetch(route).then((data) => data.text());
+
+  document.getElementById("main-page").innerHTML = html;
+  routes[path].action(docId);
 };
 
 const handleLocation = async () => {
   const path = window.location.pathname;
   const route = routes[path].url || routes[404];
-  const html = await fetch(route).then((data) => data.text()
-  );
-  
+  const html = await fetch(route).then((data) => data.text());
+
   document.getElementById("main-page").innerHTML = html;
   routes[path].action();
 };
@@ -40,4 +62,11 @@ window.route = route;
 
 handleLocation();
 
-export { route, routes, handleLocation, redirect };
+export {
+  route,
+  routes,
+  handleLocation,
+  redirect,
+  redirectToDoc,
+  handleLocationWithDoc,
+};

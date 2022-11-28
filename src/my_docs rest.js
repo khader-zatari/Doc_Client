@@ -1,8 +1,7 @@
 import $ from "jquery";
-
 import { serverAddress } from "./constants";
-const test = document.getElementById("test");
-console.log(test);
+import { redirect, redirectToDoc } from "./router";
+
 const ull = $("#ull");
 const list = document.createDocumentFragment();
 const getChildren = (id) => {
@@ -23,12 +22,16 @@ const getChildren = (id) => {
     .then((data) => {
       let inodes = data;
       console.log(inodes);
-      console.log("ULL " + ull);
+      //update path
+      if (inodes.length == 0) {
+        $("#ull").empty(); //delete all li's
+        $("#emptyMessage").text("This folder is empty");
+      }
       inodes.map(function (inode) {
-        
         let li = document.createElement("li");
         li.setAttribute("id", `${inode.id}`);
         li.setAttribute("class", `${inode.type}`);
+        li.setAttribute("name", `${inode.name}`);
         li.onclick = function () {
           console.log(
             "inode clicked " +
@@ -39,10 +42,11 @@ const getChildren = (id) => {
 
           if (li.getAttribute("class") == "DIR") {
             $("#ull").empty(); //delete all li's
+            $("#path").append(li.getAttribute("name") + "/");
             getChildren(li.getAttribute("id"));
           } else {
-            //FILE
-            //open document
+            //redirect to document with id
+            redirectToDoc("/editing_doc", li.getAttribute("id"));
           }
         };
 

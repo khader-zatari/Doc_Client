@@ -5,7 +5,7 @@ import { Stomp } from '@stomp/stompjs';
 
 import { serverAddress } from "./constants"
 import { update, addViewingUser } from './doc-functions';
-let docId = 6;
+let docId = 4;
 let stompClient;
 const socketFactory = () => {
     return new SockJS(serverAddress + '/ws');

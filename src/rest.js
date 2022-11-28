@@ -58,24 +58,34 @@ const userLogin = (user) => {
 };
 
 const getDocument = (docId) => {
-  fetch(serverAddress + "/doc/" + docId, {
-    method: "GET",
-    // mode: "no-cors",
-    // headers: {
-    //   "Access-Control-Allow-Origin": "*",
-    //   "Access-Control-Allow-Methods": "POST,PATCH,OPTIONS,GET",
-    // },
+  return new Promise((resolve, reject) => {
+    fetch(serverAddress + "/doc/" + docId, {
+      method: "GET",
+    }).then(response => response.text())
+      .then((response) => {
+        return resolve(response);
+      })
+      .catch(err => reject(err))
   })
-    .then((response) => {
-      console.log(response);
-      return response;
-    })
-    .then((data) => {
-      console.log("the file content is ", data.text());
-    }).then ((second) => {
-      console.log(second)
-    });
 };
+
+// const getDocument = (docId) => {
+//   console.log("GETTING DOCUMENT ID " + docId);
+//   fetch(serverAddress + "/doc/" + docId, {
+//     method: "GET",
+//     // mode: "no-cors",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => {
+//       console.log(response);
+//       return response;
+//     })
+//     .then((data) => {
+//       console.log(data);
+//     });
+// };
 
 const changeUserRole = (docId, userId, ownerId, userRole) => {
   fetch(serverAddress + "/doc/" + docId, {
