@@ -11,7 +11,7 @@ const startEditingDoc = (docId) => {
       $("#doc-title").text(data.name);
       $("#doc-last-edited").text(data.lastEdited);
       $("#main-doc-content").text(data.content);
-      //input.val = data;
+      let input = $("#main-doc-content");
       let start;
       let end;
       let didIdelete = false;
@@ -26,23 +26,10 @@ const startEditingDoc = (docId) => {
         var key = event.keyCode || event.charCode;
         if (key == 8 || key == 46) {
           if (start - 1 >= -1 && end - 1 >= 0) {
-            console.log("in delete");
             if (start == end) {
-              addUpdate(
-                $("#userInput").val(),
-                "DELETE",
-                null,
-                start - 1,
-                end - 1
-              );
+              addUpdate($("#userInput").val(), "DELETE", null, start - 1, end - 1);
             } else {
-              addUpdate(
-                $("#userInput").val(),
-                "DELETE_RANGE",
-                null,
-                start - 1,
-                end - 1
-              );
+              addUpdate($("#userInput").val(), "DELETE_RANGE", null, start - 1, end - 1);
             }
             didIdelete = true;
           }
@@ -53,21 +40,9 @@ const startEditingDoc = (docId) => {
         if (!didIdelete) {
           console.log(didIdelete);
           if (start == end) {
-            addUpdate(
-              $("#userInput").val(),
-              "APPEND",
-              event.originalEvent.data,
-              end,
-              end
-            );
+            addUpdate($("#userInput").val(), "APPEND", event.originalEvent.data, end, end);
           } else {
-            addUpdate(
-              $("#userInput").val(),
-              "APPEND_RANGE",
-              event.originalEvent.data,
-              start - 1,
-              end - 1
-            );
+            addUpdate($("#userInput").val(), "APPEND_RANGE", event.originalEvent.data, start - 1, end - 1);
           }
         }
         didIdelete = false;
@@ -164,7 +139,7 @@ const addViewingUser = (viewingUsers) => {
 };
 
 const update = (updateData) => {
-  let textArea = $("#main-doc");
+  let textArea = $("#main-doc-content");
   let user = $("#userInput").val();
   let start = textArea.prop("selectionStart");
   if (user != updateData.userName) {
