@@ -4,7 +4,7 @@ import { addUpdate, sendName } from "./sockets";
 
 let isDelete = false;
 const startEditingDoc = (docId) => {
-  getDocument(docId)
+  getDocument(docId) //TODO: pass parameter userId
     .then((data) => {
       console.log("data id", data.id);
       $("#doc-id").text(data.id);
@@ -27,9 +27,21 @@ const startEditingDoc = (docId) => {
         if (key == 8 || key == 46) {
           if (start - 1 >= -1 && end - 1 >= 0) {
             if (start == end) {
-              addUpdate($("#userInput").val(), "DELETE", null, start - 1, end - 1);
+              addUpdate(
+                $("#userInput").val(),
+                "DELETE",
+                null,
+                start - 1,
+                end - 1
+              );
             } else {
-              addUpdate($("#userInput").val(), "DELETE_RANGE", null, start - 1, end - 1);
+              addUpdate(
+                $("#userInput").val(),
+                "DELETE_RANGE",
+                null,
+                start - 1,
+                end - 1
+              );
             }
             didIdelete = true;
           }
@@ -40,9 +52,21 @@ const startEditingDoc = (docId) => {
         if (!didIdelete) {
           console.log(didIdelete);
           if (start == end) {
-            addUpdate($("#userInput").val(), "APPEND", event.originalEvent.data, end, end);
+            addUpdate(
+              $("#userInput").val(),
+              "APPEND",
+              event.originalEvent.data,
+              end,
+              end
+            );
           } else {
-            addUpdate($("#userInput").val(), "APPEND_RANGE", event.originalEvent.data, start - 1, end - 1);
+            addUpdate(
+              $("#userInput").val(),
+              "APPEND_RANGE",
+              event.originalEvent.data,
+              start - 1,
+              end - 1
+            );
           }
         }
         didIdelete = false;
@@ -50,6 +74,7 @@ const startEditingDoc = (docId) => {
     })
     .catch((err) => console.log(err));
 };
+
 // $(() => {
 //   var input = $("#main-doc");
 //   let docContent = getDocument(4);
@@ -190,4 +215,30 @@ const update = (updateData) => {
   }
 };
 
-export { update, addViewingUser, startEditingDoc };
+const initExport = () => {
+  let exportBtn = $("#exportBtn");
+
+  exportBtn.on("click", (event) => {
+    let text = $("#main-doc-content").val();
+    let filename = $("#doc-title").text();
+    download(filename, text);
+  });
+};
+
+const download = (filename, text) => {
+  let element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};
+
+export { update, addViewingUser, startEditingDoc, initExport };

@@ -1,5 +1,5 @@
 import { getChildren } from "./my_docs rest";
-import { startEditingDoc } from "./doc-functions";
+import { startEditingDoc, initExport } from "./doc-functions";
 import { getDocument } from "./rest";
 import $ from "jquery";
 import { initRegister } from "./register";
@@ -52,6 +52,7 @@ const routes = {
     url: "templates/editing_doc.html",
     action: (id) => {
       startEditingDoc(id);
+      initExport();
     },
   },
 };

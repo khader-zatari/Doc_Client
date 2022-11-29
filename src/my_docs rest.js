@@ -49,6 +49,7 @@ const getChildren = (id) => {
             currentDirId = li.getAttribute("id");
             //console.log("Current dir id changed:" + currentDirId);
           } else {
+            //TODO: check access before redirection (docId, userId);
             redirectToDoc("/editing_doc", li.getAttribute("id"));
           }
         };
