@@ -4,6 +4,7 @@ import { getDocument } from "./rest";
 import $ from "jquery";
 import { initRegister } from "./register";
 import { initLogin } from "./login";
+import { initImport } from "./my_docs rest";
 
 const route = (event) => {
   event = event || window.event;
@@ -44,6 +45,7 @@ const routes = {
     url: "templates/my_docs.html",
     action: () => {
       getChildren(1);
+      initImport();
     },
   },
   "/editing_doc": {

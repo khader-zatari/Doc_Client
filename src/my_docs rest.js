@@ -2,8 +2,11 @@ import $ from "jquery";
 import { serverAddress } from "./constants";
 import { redirect, redirectToDoc } from "./router";
 
+let currentDirId = 1;
+let currentUserId = 2; //TODO: change later
 const ull = $("#ull");
 const list = document.createDocumentFragment();
+
 const getChildren = (id) => {
   console.log("GETTING CHILDREN OF INODE" + id);
   fetch(serverAddress + "/fs/level", {
@@ -43,6 +46,8 @@ const getChildren = (id) => {
             $("#ull").empty();
             $("#path").append(li.getAttribute("name") + "/");
             getChildren(li.getAttribute("id"));
+            currentDirId = li.getAttribute("id");
+            //console.log("Current dir id changed:" + currentDirId);
           } else {
             redirectToDoc("/editing_doc", li.getAttribute("id"));
           }
@@ -71,4 +76,32 @@ const getChildren = (id) => {
   $("#ull").append(list);
 };
 
-export { getChildren };
+const initImport = () => {
+  $("#importBtn").on("click", function (event) {
+    event.preventDefault();
+    const formData = new FormData();
+    const fileField = document.querySelector('input[type="file"]');
+    formData.append("file", fileField.files[0]);
+    formData.append("parentInodeId", currentDirId);
+    formData.append("userId", currentUserId);
+    //console.log(formData);
+    uploadFile(formData);
+  });
+};
+
+const uploadFile = (formData) => {
+  console.log("REST-UPLOAD FILE");
+  fetch(serverAddress + "/fs/uploadFile", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("Success", result);
+    })
+    .catch((error) => {
+      console.error(`ERROR: ${error}`);
+    });
+};
+
+export { getChildren, initImport };
