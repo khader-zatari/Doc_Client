@@ -132,9 +132,23 @@ const startEditingDoc = (docId) => {
 const addViewingUser = (viewingUsers) => {
   let viewingUser = $("#viewingUsers");
   let thisUser = $("#userInput").val();
+  const list = document.createDocumentFragment();
   viewingUsers
     .filter((user) => user != thisUser)
-    .forEach((user, i) => viewingUser.html("<p>" + user + "</p>"));
+    .forEach((user, i) => {
+
+      let li = document.createElement("li");
+      li.setAttribute("id", `${user}`);
+      li.setAttribute("class", `${user}`);
+      li.setAttribute("name", `${user}`);
+      let name = document.createElement("span");
+      name.innerHTML = `${user}`;
+      li.appendChild(name);
+      list.appendChild(li);
+    });
+
+  $("#viewingUsers").html(list);
+
   console.log(viewingUsers);
 };
 
