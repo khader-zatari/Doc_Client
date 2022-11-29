@@ -20,17 +20,9 @@ const createUser = (user) => {
       let data = res.json();
       console.log(data);
       redirect("/login");
-      //-----catches- need to edit-------------------------------
-      data.then(function (result) {
-        let msg = result.message;
-        console.log(msg);
-        if (msg == undefined) {
-          addSuccessLabel(result);
-          disableSignup();
-        } else console.log(msg);
-      });
     })
     .catch((error) => {
+      console.log("i'm ERROR");
       console.error(error);
     });
 };
@@ -50,6 +42,7 @@ const userLogin = (user) => {
   })
     .then((data) => {
       console.log(data);
+      //TODO: save token in localstorage.
       redirect("/my_docs");
     })
     .catch((error) => {
@@ -65,8 +58,8 @@ const getDocument = (docId) => {
       .then((response) => {
         return resolve(response.json());
       })
-      .catch(err => reject(err))
-  })
+      .catch((err) => reject(err));
+  });
 };
 
 // const getDocument = (docId) => {
