@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { getDocument } from "./rest";
+import { getDocument, changeUserRole } from "./rest";
 import { addUpdate, sendName } from "./sockets";
 
 let isDelete = false;
@@ -241,4 +241,24 @@ const download = (filename, text) => {
   document.body.removeChild(element);
 };
 
-export { update, addViewingUser, startEditingDoc, initExport };
+const initEditRoleForm = (id) => {
+  $("#changeRoleBtn").on("click", function (event) {
+    event.preventDefault();
+    const roleForm = {
+      ownerId: 2, //CHANGE HARD CODED USER
+      docId: id,
+      email: $("#email").val().toLowerCase(),
+      role: $("#roles").find(":selected").val().toUpperCase(),
+    };
+    console.log(roleForm);
+    changeUserRole(roleForm);
+  });
+};
+
+export {
+  update,
+  addViewingUser,
+  startEditingDoc,
+  initExport,
+  initEditRoleForm,
+};

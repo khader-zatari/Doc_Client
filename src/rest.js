@@ -50,6 +50,7 @@ const userLogin = (user) => {
     });
 };
 
+//--Document-----------------------------------------------------------------------------------
 const getDocument = (docId) => {
   return new Promise((resolve, reject) => {
     fetch(serverAddress + "/doc/" + docId, {
@@ -80,16 +81,23 @@ const getDocument = (docId) => {
 //     });
 // };
 
-const changeUserRole = (docId, userId, ownerId, userRole) => {
-  fetch(serverAddress + "/doc/" + docId, {
-    method: update,
+const changeUserRole = (roleForm) => {
+  console.log("IN CHANGEUSERROLE FUNCTION", roleForm);
+  fetch(serverAddress + "/doc/changeUserRoll/" + roleForm.docId, {
+    method: "POST",
     body: JSON.stringify({
-      userId: userId,
-      ownerId: ownerId,
-      userRole: userRole,
+      ownerId: roleForm.ownerId,
+      email: roleForm.email,
+      userRole: roleForm.role.toUpperCase() === "REMOVE" ? null : roleForm.role,
+      isDelete: roleForm.role.toUpperCase() === "REMOVE" ? true : false,
     }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   })
-    .then(() => {})
+    .then((response) => {
+      return response.json();
+    })
     .catch(() => {});
 };
 

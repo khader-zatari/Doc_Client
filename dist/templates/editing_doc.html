@@ -14,13 +14,27 @@
     <button id="exportBtn">Export</button>
     <ul id="viewingUsers"></ul>
     <div><input type="text" id="userInput" /></div>
-    <div>
+    <div class="row">
       <div class="col-6">
         <textarea
           class="form-control"
           id="main-doc-content"
           rows="20"
         ></textarea>
+      </div>
+      <div class="col-6">
+        <h5>Share doc with:</h5>
+        <form id="editRole">
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" /> <br />
+          <label for="roles">Role:</label>
+          <select id="roles" name="roles">
+            <option value="viewer">Viewer</option>
+            <option value="editor">Editor</option>
+            <option value="remove">Remove</option>
+          </select>
+          <button type="submit" id="changeRoleBtn">Submit</button>
+        </form>
       </div>
     </div>
   </body>
