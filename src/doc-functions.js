@@ -1,6 +1,6 @@
 import $ from "jquery";
 import { getDocument } from "./rest";
-import { addUpdate, sendName } from "./sockets";
+import { addUpdate, removeUser, sendName } from "./sockets";
 
 let isDelete = false;
 const startEditingDoc = (docId) => {

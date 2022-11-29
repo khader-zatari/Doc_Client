@@ -23,6 +23,7 @@ const newUserViewing = (payload) => {
 const onConnected = () => {
     stompClient.subscribe('/topic/updates/' + docId, onMessageReceived);
     stompClient.subscribe('/topic/usersJoin/' + docId, newUserViewing);
+    stompClient.subscribe('/topic/userDisconnect/' + docId, newUserViewing);
 
 }
 
@@ -49,5 +50,10 @@ const sendUpate = (user, type, content, startPosition, endPosition) => {
         endPosition: endPosition,
     }))
 }
+const removeUser = (user) => {
+    stompClient.send("app/userDisconnect/" + docId, [], JSON.stringify({
+        userName: user
+    }))
+}
 
-export { openConnection, addUpdate, sendName }
+export { openConnection, addUpdate, sendName ,removeUser}
