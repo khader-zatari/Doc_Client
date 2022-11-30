@@ -65,7 +65,8 @@ const getChildren = (id) => {
                   redirectToDoc(
                     "/editing_doc",
                     inodeId,
-                    localStorage.getItem("userId") //TODO: delete userid
+                    localStorage.getItem("userId"), //TODO: delete userid
+                    response.data.userRole
                   );
                 } else {
                   alert(response.message);

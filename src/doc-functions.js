@@ -3,7 +3,7 @@ import { getDocument, changeUserRole } from "./rest";
 import { addUpdate, sendName } from "./sockets";
 
 let isDelete = false;
-const startEditingDoc = (docId, userId) => {
+const startEditingDoc = (docId, userId, userRole) => {
   //delete user id( it's in local storage)
   getDocument(docId)
     .then((data) => {
@@ -12,9 +12,21 @@ const startEditingDoc = (docId, userId) => {
       $("#doc-title").text(data.name);
       $("#doc-last-edited").text(data.lastEdited);
       $("#main-doc-content").text(data.content);
+      $("#your-role").text(userRole + " Mode");
+
+      //text area is readonly for viewer
+      if (userRole.toUpperCase() === "VIEWER") {
+        $("#main-doc-content").prop("readonly", true);
+      }
+
       //check if not owner - hide the change role form
-      console.log("user connedted: " + localStorage.getItem('userId') + " Owner id: " + data.owner.id);
-      if (localStorage.getItem('userId') !== data.owner.id) {
+      console.log(
+        "user connedted: " +
+          localStorage.getItem("userId") +
+          " Owner id: " +
+          data.owner.id
+      );
+      if (localStorage.getItem("userId") !== data.owner.id) {
         $("#change-role-form").hide();
       }
       let input = $("#main-doc-content");

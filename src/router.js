@@ -18,10 +18,10 @@ const redirect = (page) => {
   handleLocation();
 };
 
-const redirectToDoc = (page, docId, userId) => {
+const redirectToDoc = (page, docId, userId, userRole) => {
   //delete user id( it's in local storage)
   window.history.pushState({}, "", page);
-  handleLocationWithDoc(docId, userId);
+  handleLocationWithDoc(docId, userId, userRole);
 };
 
 const routes = {
@@ -51,22 +51,22 @@ const routes = {
   },
   "/editing_doc": {
     url: "templates/editing_doc.html",
-    action: (docId, userId) => {
-      //userId is sent from the login process.
-      startEditingDoc(docId, userId); //delte user id (stored in local storage);
+    action: (docId, userId, userRole) => {
+      //take userId from local storage
+      startEditingDoc(docId, userId, userRole); //delte user id (stored in local storage);
       initExport();
       initEditRoleForm(docId);
     },
   },
 };
 
-const handleLocationWithDoc = async (docId, userId) => {
+const handleLocationWithDoc = async (docId, userId, userRole) => {
   const path = window.location.pathname;
   const route = routes[path].url || routes[404];
   const html = await fetch(route).then((data) => data.text());
 
   document.getElementById("main-page").innerHTML = html;
-  routes[path].action(docId, userId);
+  routes[path].action(docId, userId, userRole);
 };
 
 const handleLocation = async () => {
