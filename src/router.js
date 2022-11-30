@@ -19,6 +19,7 @@ const redirect = (page) => {
 };
 
 const redirectToDoc = (page, docId, userId) => {
+  //delete user id( it's in local storage)
   window.history.pushState({}, "", page);
   handleLocationWithDoc(docId, userId);
 };
@@ -52,9 +53,9 @@ const routes = {
     url: "templates/editing_doc.html",
     action: (docId, userId) => {
       //userId is sent from the login process.
-      startEditingDoc(docId, userId);
+      startEditingDoc(docId, userId); //delte user id (stored in local storage);
       initExport();
-      initEditRoleForm(docId); //TODO: render only if owner
+      initEditRoleForm(docId);
     },
   },
 };

@@ -16,14 +16,19 @@ const createUser = (user) => {
       "Content-Type": "application/json",
     },
   })
-    .then((res) => {
-      let data = res.json();
-      console.log(data);
-      redirect("/login");
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      if (response.success) {
+        alert("redirecting to your docs...");
+        redirect("/login");
+      } else {
+        alert(response.message);
+      }
     })
     .catch((error) => {
-      console.log("i'm ERROR");
-      console.error(error);
+      console.error(`ERROR: ${error}`);
     });
 };
 
@@ -40,10 +45,17 @@ const userLogin = (user) => {
       "Content-Type": "application/json",
     },
   })
-    .then((data) => {
-      console.log(data);
-      //TODO: save token in localstorage.
-      redirect("/my_docs");
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      if (response.success) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.id);
+        redirect("/my_docs");
+      } else {
+        alert(response.message);
+      }
     })
     .catch((error) => {
       console.error(`ERROR: ${error}`);

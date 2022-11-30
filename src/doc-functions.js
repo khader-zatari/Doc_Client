@@ -4,6 +4,7 @@ import { addUpdate, sendName } from "./sockets";
 
 let isDelete = false;
 const startEditingDoc = (docId, userId) => {
+  //delete user id( it's in local storage)
   getDocument(docId)
     .then((data) => {
       console.log("doc data", data);
@@ -12,8 +13,8 @@ const startEditingDoc = (docId, userId) => {
       $("#doc-last-edited").text(data.lastEdited);
       $("#main-doc-content").text(data.content);
       //check if not owner - hide the change role form
-      console.log("user connedted: " + userId + " Owner id: " + data.owner.id);
-      if (userId !== data.owner.id) {
+      console.log("user connedted: " + localStorage.getItem('userId') + " Owner id: " + data.owner.id);
+      if (localStorage.getItem('userId') !== data.owner.id) {
         $("#change-role-form").hide();
       }
       let input = $("#main-doc-content");
