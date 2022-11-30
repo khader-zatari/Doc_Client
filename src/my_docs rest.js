@@ -3,7 +3,6 @@ import { serverAddress } from "./constants";
 import { redirect, redirectToDoc } from "./router";
 
 let currentDirId = 1;
-let currentUserId = 4; //TODO: change later
 const ull = $("#ull");
 const list = document.createDocumentFragment();
 
@@ -35,22 +34,46 @@ const getChildren = (id) => {
         li.setAttribute("type", `${inode.type}`);
         li.setAttribute("name", `${inode.name}`);
         li.onclick = function () {
+          let inodeId = li.getAttribute("id");
           console.log(
-            "inode clicked " +
-              li.getAttribute("id") +
-              " type: " +
-              li.getAttribute("class")
+            "inode clicked " + inodeId + " type: " + li.getAttribute("class")
           );
 
           if (li.getAttribute("type") == "DIR") {
             $("#ull").empty();
             $("#path").append(li.getAttribute("name") + "/");
-            getChildren(li.getAttribute("id"));
-            currentDirId = li.getAttribute("id");
+            getChildren(inodeId);
+            currentDirId = inodeId;
             //console.log("Current dir id changed:" + currentDirId);
           } else {
-            //TODO: check access before redirection (docId, userId);
-            redirectToDoc("/editing_doc", li.getAttribute("id"), currentUserId);
+            //permission check before opening a document
+            return fetch(serverAddress + "/doc/getPerm", {
+              method: "POST",
+              body: JSON.stringify({
+                userId: localStorage.getItem("userId"),
+                docId: inodeId,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => {
+                return response.json();
+              })
+              .then((response) => {
+                if (response.success) {
+                  redirectToDoc(
+                    "/editing_doc",
+                    inodeId,
+                    localStorage.getItem("userId") //TODO: delete userid
+                  );
+                } else {
+                  alert(response.message);
+                }
+              })
+              .catch((error) => {
+                console.log(`Error: ${error}`);
+              });
           }
         };
 
@@ -84,7 +107,7 @@ const initImport = () => {
     const fileField = document.querySelector('input[type="file"]');
     formData.append("file", fileField.files[0]);
     formData.append("parentInodeId", currentDirId);
-    formData.append("userId", currentUserId);
+    formData.append("userId", localStorage.getItem("userId"));
     //console.log(formData);
     uploadFile(formData);
   });
