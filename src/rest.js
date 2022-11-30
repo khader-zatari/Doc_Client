@@ -21,7 +21,7 @@ const createUser = (user) => {
     })
     .then((response) => {
       if (response.success) {
-        alert("redirecting to your docs...");
+        alert("registration successful! Welcome " + response.data.name);
         redirect("/login");
       } else {
         alert(response.message);
@@ -52,6 +52,8 @@ const userLogin = (user) => {
       if (response.success) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.id);
+        localStorage.setItem("userName", response.data.name);
+        alert("Login successful, redirecting to your docs...");
         redirect("/my_docs");
       } else {
         alert(response.message);
@@ -75,24 +77,7 @@ const getDocument = (docId) => {
   });
 };
 
-// const getDocument = (docId) => {
-//   console.log("GETTING DOCUMENT ID " + docId);
-//   fetch(serverAddress + "/doc/" + docId, {
-//     method: "GET",
-//     // mode: "no-cors",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => {
-//       console.log(response);
-//       return response;
-//     })
-//     .then((data) => {
-//       console.log(data);
-//     });
-// };
-
+//--Change User Role---------------------------------------------------------------------------
 const changeUserRole = (roleForm) => {
   console.log("IN CHANGEUSERROLE FUNCTION", roleForm);
   fetch(serverAddress + "/doc/changeUserRoll/" + roleForm.docId, {
@@ -114,32 +99,3 @@ const changeUserRole = (roleForm) => {
 };
 
 export { createUser, getDocument, changeUserRole, userLogin };
-
-/**
- * 
- * 
- * const createUser = (user) => {
-  console.log(user);
-  fetch(serverAddress + "/auth/signup", {
-    method: 'POST',
-    body: JSON.stringify({ nickName: user.nickName, email: user.email, password: user.password }),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST,PATCH,OPTIONS'
-    }
-  }).then((res => {
-    let data = res.json();
-    data.then(function (result) {
-      let msg = result.message;
-      if (msg == undefined) {
-        addSuccessLabel(result);
-        disableSignup();
-
-      }
-      else
-        addErrorLabel(msg);
-    });
-  }))
-}
- */

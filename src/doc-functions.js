@@ -179,7 +179,6 @@ const addViewingUser = (viewingUsers) => {
   viewingUsers
     .filter((user) => user != thisUser)
     .forEach((user, i) => {
-
       let li = document.createElement("li");
       li.setAttribute("id", `${user}`);
       li.setAttribute("class", `${user}`);
