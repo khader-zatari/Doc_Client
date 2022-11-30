@@ -51,9 +51,10 @@ const routes = {
   "/editing_doc": {
     url: "templates/editing_doc.html",
     action: (id) => {
+      //TODO: parameters should be docid userid
       startEditingDoc(id);
       initExport();
-      initEditRoleForm(id);
+      initEditRoleForm(id); //TODO: render only if owner
     },
   },
 };

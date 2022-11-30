@@ -6,7 +6,7 @@ let isDelete = false;
 const startEditingDoc = (docId) => {
   getDocument(docId) //TODO: pass parameter userId
     .then((data) => {
-      console.log("data id", data.id);
+      console.log("doc data", data);
       $("#doc-id").text(data.id);
       $("#doc-title").text(data.name);
       $("#doc-last-edited").text(data.lastEdited);

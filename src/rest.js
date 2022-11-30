@@ -98,7 +98,7 @@ const changeUserRole = (roleForm) => {
     .then((response) => {
       return response.json();
     })
-    .catch(() => {});
+    .catch(() => {}); //TODO: handle error messages
 };
 
 export { createUser, getDocument, changeUserRole, userLogin };
