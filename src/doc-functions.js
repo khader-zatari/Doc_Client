@@ -1,16 +1,21 @@
 import $ from "jquery";
-import { getDocument } from "./rest";
+import { getDocument, changeUserRole } from "./rest";
 import { addUpdate, sendName } from "./sockets";
 
 let isDelete = false;
-const startEditingDoc = (docId) => {
+const startEditingDoc = (docId, userId) => {
   getDocument(docId)
     .then((data) => {
-      console.log("data id", data.id);
+      console.log("doc data", data);
       $("#doc-id").text(data.id);
       $("#doc-title").text(data.name);
       $("#doc-last-edited").text(data.lastEdited);
       $("#main-doc-content").text(data.content);
+      //check if not owner - hide the change role form
+      console.log("user connedted: " + userId + " Owner id: " + data.owner.id);
+      if (userId !== data.owner.id) {
+        $("#change-role-form").hide();
+      }
       let input = $("#main-doc-content");
       let start;
       let end;
@@ -27,9 +32,21 @@ const startEditingDoc = (docId) => {
         if (key == 8 || key == 46) {
           if (start - 1 >= -1 && end - 1 >= 0) {
             if (start == end) {
-              addUpdate($("#userInput").val(), "DELETE", null, start - 1, end - 1);
+              addUpdate(
+                $("#userInput").val(),
+                "DELETE",
+                null,
+                start - 1,
+                end - 1
+              );
             } else {
-              addUpdate($("#userInput").val(), "DELETE_RANGE", null, start - 1, end - 1);
+              addUpdate(
+                $("#userInput").val(),
+                "DELETE_RANGE",
+                null,
+                start - 1,
+                end - 1
+              );
             }
             didIdelete = true;
           }
@@ -40,9 +57,21 @@ const startEditingDoc = (docId) => {
         if (!didIdelete) {
           console.log(didIdelete);
           if (start == end) {
-            addUpdate($("#userInput").val(), "APPEND", event.originalEvent.data, end, end);
+            addUpdate(
+              $("#userInput").val(),
+              "APPEND",
+              event.originalEvent.data,
+              end,
+              end
+            );
           } else {
-            addUpdate($("#userInput").val(), "APPEND_RANGE", event.originalEvent.data, start - 1, end - 1);
+            addUpdate(
+              $("#userInput").val(),
+              "APPEND_RANGE",
+              event.originalEvent.data,
+              start - 1,
+              end - 1
+            );
           }
         }
         didIdelete = false;
@@ -50,6 +79,7 @@ const startEditingDoc = (docId) => {
     })
     .catch((err) => console.log(err));
 };
+
 // $(() => {
 //   var input = $("#main-doc");
 //   let docContent = getDocument(4);
@@ -190,4 +220,50 @@ const update = (updateData) => {
   }
 };
 
-export { update, addViewingUser, startEditingDoc };
+const initExport = () => {
+  let exportBtn = $("#exportBtn");
+
+  exportBtn.on("click", (event) => {
+    let text = $("#main-doc-content").val();
+    let filename = $("#doc-title").text();
+    download(filename, text);
+  });
+};
+
+const download = (filename, text) => {
+  let element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};
+
+const initEditRoleForm = (docId) => {
+  $("#changeRoleBtn").on("click", function (event) {
+    event.preventDefault();
+    const roleForm = {
+      ownerId: 2, //CHANGE HARD CODED USER
+      docId: docId,
+      email: $("#email").val().toLowerCase(),
+      role: $("#roles").find(":selected").val().toUpperCase(),
+    };
+    console.log(roleForm);
+    changeUserRole(roleForm);
+  });
+};
+
+export {
+  update,
+  addViewingUser,
+  startEditingDoc,
+  initExport,
+  initEditRoleForm,
+};

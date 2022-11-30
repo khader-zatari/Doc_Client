@@ -3,7 +3,7 @@ import { createUser, userLogin } from "./rest";
 import { openConnection } from "./sockets";
 import { route, routes, handleLocation } from "./router";
 import "bootstrap";
-import "bootstrap/dist/css/bootstrap.css";
+//import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { sayHi } from "./register";
 import { serverAddress } from "./constants";
