@@ -8,8 +8,8 @@
 body {
   /* min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center; */
+  align-items: center; */
+  justify-content: center;
   background: #4070f4;
 }
 .wrapper {
@@ -96,4 +96,9 @@ form .text h3 a:hover {
 
 a {
   color: white;
+}
+
+#your-role {
+  color: rgb(114, 0, 0);
+  background-color: rgb(231, 221, 255);
 }
