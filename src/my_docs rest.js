@@ -3,7 +3,7 @@ import { serverAddress } from "./constants";
 import { redirect, redirectToDoc } from "./router";
 
 let currentDirId = 1;
-let currentUserId = 4; //TODO: change later
+//let currentUserId = 4;
 const ull = $("#ull");
 const list = document.createDocumentFragment();
 
@@ -50,7 +50,11 @@ const getChildren = (id) => {
             //console.log("Current dir id changed:" + currentDirId);
           } else {
             //TODO: check access before redirection (docId, userId);
-            redirectToDoc("/editing_doc", li.getAttribute("id"), currentUserId);
+            redirectToDoc(
+              "/editing_doc",
+              li.getAttribute("id"),
+              localStorage.getItem("userId")
+            );
           }
         };
 
@@ -84,7 +88,7 @@ const initImport = () => {
     const fileField = document.querySelector('input[type="file"]');
     formData.append("file", fileField.files[0]);
     formData.append("parentInodeId", currentDirId);
-    formData.append("userId", currentUserId);
+    formData.append("userId", localStorage.getItem("userId"));
     //console.log(formData);
     uploadFile(formData);
   });
