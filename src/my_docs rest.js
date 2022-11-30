@@ -3,7 +3,7 @@ import { serverAddress } from "./constants";
 import { redirect, redirectToDoc } from "./router";
 
 let currentDirId = 1;
-let currentUserId = 2; //TODO: change later
+let currentUserId = 4; //TODO: change later
 const ull = $("#ull");
 const list = document.createDocumentFragment();
 
@@ -50,7 +50,7 @@ const getChildren = (id) => {
             //console.log("Current dir id changed:" + currentDirId);
           } else {
             //TODO: check access before redirection (docId, userId);
-            redirectToDoc("/editing_doc", li.getAttribute("id"));
+            redirectToDoc("/editing_doc", li.getAttribute("id"), currentUserId);
           }
         };
 

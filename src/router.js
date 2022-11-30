@@ -18,9 +18,9 @@ const redirect = (page) => {
   handleLocation();
 };
 
-const redirectToDoc = (page, docId) => {
+const redirectToDoc = (page, docId, userId) => {
   window.history.pushState({}, "", page);
-  handleLocationWithDoc(docId);
+  handleLocationWithDoc(docId, userId);
 };
 
 const routes = {
@@ -50,22 +50,22 @@ const routes = {
   },
   "/editing_doc": {
     url: "templates/editing_doc.html",
-    action: (id) => {
-      //TODO: parameters should be docid userid
-      startEditingDoc(id);
+    action: (docId, userId) => {
+      //userId is sent from the login process.
+      startEditingDoc(docId, userId);
       initExport();
-      initEditRoleForm(id); //TODO: render only if owner
+      initEditRoleForm(docId); //TODO: render only if owner
     },
   },
 };
 
-const handleLocationWithDoc = async (docId) => {
+const handleLocationWithDoc = async (docId, userId) => {
   const path = window.location.pathname;
   const route = routes[path].url || routes[404];
   const html = await fetch(route).then((data) => data.text());
 
   document.getElementById("main-page").innerHTML = html;
-  routes[path].action(docId);
+  routes[path].action(docId, userId);
 };
 
 const handleLocation = async () => {

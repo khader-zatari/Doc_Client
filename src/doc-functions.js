@@ -3,14 +3,19 @@ import { getDocument, changeUserRole } from "./rest";
 import { addUpdate, sendName } from "./sockets";
 
 let isDelete = false;
-const startEditingDoc = (docId) => {
-  getDocument(docId) //TODO: pass parameter userId
+const startEditingDoc = (docId, userId) => {
+  getDocument(docId)
     .then((data) => {
       console.log("doc data", data);
       $("#doc-id").text(data.id);
       $("#doc-title").text(data.name);
       $("#doc-last-edited").text(data.lastEdited);
       $("#main-doc-content").text(data.content);
+      //check if not owner - hide the change role form
+      console.log("user connedted: " + userId + " Owner id: " + data.owner.id);
+      if (userId !== data.owner.id) {
+        $("#change-role-form").hide();
+      }
       let input = $("#main-doc-content");
       let start;
       let end;
@@ -241,12 +246,12 @@ const download = (filename, text) => {
   document.body.removeChild(element);
 };
 
-const initEditRoleForm = (id) => {
+const initEditRoleForm = (docId) => {
   $("#changeRoleBtn").on("click", function (event) {
     event.preventDefault();
     const roleForm = {
       ownerId: 2, //CHANGE HARD CODED USER
-      docId: id,
+      docId: docId,
       email: $("#email").val().toLowerCase(),
       role: $("#roles").find(":selected").val().toUpperCase(),
     };
