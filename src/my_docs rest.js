@@ -83,19 +83,19 @@ const getChildren = (id) => {
         };
 
         let name = document.createElement("span");
-        //let type = document.createElement("span");
+        let type = document.createElement("span");
         let icon = document.createElement("i");
         icon.className =
           li.getAttribute("type") == "DIR"
             ? "bi bi-folder"
             : "bi bi-file-earmark";
 
-        name.innerHTML = `${inode.name}`;
-        //type.innerHTML = `${inode.type}`;
+        name.innerHTML = ` (${inode.name}) `;
+        type.innerHTML = ` (${inode.type}) `;
 
         li.appendChild(icon);
         li.appendChild(name);
-        //li.appendChild(type);
+        li.appendChild(type);
         list.appendChild(li);
       });
     })
