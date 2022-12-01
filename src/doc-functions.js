@@ -22,9 +22,9 @@ const startEditingDoc = (docId, userId, userRole) => {
       //check if not owner - hide the change role form
       console.log(
         "user connedted: " +
-          localStorage.getItem("userId") +
-          " Owner id: " +
-          data.owner.id
+        localStorage.getItem("userId") +
+        " Owner id: " +
+        data.owner.id
       );
       if (localStorage.getItem("userId") !== data.owner.id) {
         $("#change-role-form").hide();
@@ -46,7 +46,7 @@ const startEditingDoc = (docId, userId, userRole) => {
           if (start - 1 >= -1 && end - 1 >= 0) {
             if (start == end) {
               addUpdate(
-                $("#userInput").val(),
+                localStorage.getItem('UserId'),
                 "DELETE",
                 null,
                 start - 1,
@@ -54,7 +54,7 @@ const startEditingDoc = (docId, userId, userRole) => {
               );
             } else {
               addUpdate(
-                $("#userInput").val(),
+                localStorage.getItem('UserId'),
                 "DELETE_RANGE",
                 null,
                 start - 1,
@@ -71,7 +71,7 @@ const startEditingDoc = (docId, userId, userRole) => {
           console.log(didIdelete);
           if (start == end) {
             addUpdate(
-              $("#userInput").val(),
+              localStorage.getItem('UserId'),
               "APPEND",
               event.originalEvent.data,
               end,
@@ -79,7 +79,7 @@ const startEditingDoc = (docId, userId, userRole) => {
             );
           } else {
             addUpdate(
-              $("#userInput").val(),
+              localStorage.getItem('UserId'),
               "APPEND_RANGE",
               event.originalEvent.data,
               start - 1,
