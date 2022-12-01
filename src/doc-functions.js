@@ -8,6 +8,7 @@ const startEditingDoc = (docId, userId, userRole) => {
   getDocument(docId)
     .then((data) => {
       console.log("doc data", data);
+      sendName(localStorage.getItem("userName"));
       $("#doc-id").text(data.id);
       $("#doc-title").text(data.name);
       $("#doc-last-edited").text(data.lastEdited);
@@ -22,12 +23,15 @@ const startEditingDoc = (docId, userId, userRole) => {
       //check if not owner - hide the change role form
       console.log(
         "user connedted: " +
-          localStorage.getItem("userId") +
-          " Owner id: " +
-          data.owner.id
+        localStorage.getItem("userId") +
+        " Owner id: " +
+        data.owner.id
       );
-      if (localStorage.getItem("userId") !== data.owner.id) {
+      if (localStorage.getItem("userId") != data.owner.id) {
         $("#change-role-form").hide();
+      } else {
+        $("#change-role-form").show();
+
       }
       let input = $("#main-doc-content");
       let start;
@@ -36,7 +40,8 @@ const startEditingDoc = (docId, userId, userRole) => {
       let nameIsSent = false;
       input.on("keydown", (event) => {
         if (!nameIsSent) {
-          sendName($("#userInput").val());
+          // sendName($("#userInput").val());
+          // sendName(localStorage.getItem("userName"));
           nameIsSent = true;
         }
         start = input.prop("selectionStart");
@@ -46,7 +51,7 @@ const startEditingDoc = (docId, userId, userRole) => {
           if (start - 1 >= -1 && end - 1 >= 0) {
             if (start == end) {
               addUpdate(
-                $("#userInput").val(),
+                localStorage.getItem('userId'),
                 "DELETE",
                 null,
                 start - 1,
@@ -54,7 +59,7 @@ const startEditingDoc = (docId, userId, userRole) => {
               );
             } else {
               addUpdate(
-                $("#userInput").val(),
+                localStorage.getItem('userId'),
                 "DELETE_RANGE",
                 null,
                 start - 1,
@@ -71,7 +76,7 @@ const startEditingDoc = (docId, userId, userRole) => {
           console.log(didIdelete);
           if (start == end) {
             addUpdate(
-              $("#userInput").val(),
+              localStorage.getItem('userId'),
               "APPEND",
               event.originalEvent.data,
               end,
@@ -79,7 +84,7 @@ const startEditingDoc = (docId, userId, userRole) => {
             );
           } else {
             addUpdate(
-              $("#userInput").val(),
+              localStorage.getItem('userId'),
               "APPEND_RANGE",
               event.originalEvent.data,
               start - 1,
@@ -196,9 +201,10 @@ const addViewingUser = (viewingUsers) => {
 
 const update = (updateData) => {
   let textArea = $("#main-doc-content");
-  let user = $("#userInput").val();
+  // let user = $("#userInput").val();
+  let user = localStorage.getItem("userId");
   let start = textArea.prop("selectionStart");
-  if (user != updateData.userName) {
+  if (user != updateData.userId) {
     textArea.val(updateData.documentText);
 
     if (updateData.updateType == "APPEND") {
@@ -276,7 +282,7 @@ const initEditRoleForm = (docId) => {
   $("#changeRoleBtn").on("click", function (event) {
     event.preventDefault();
     const roleForm = {
-      ownerId: 2, //CHANGE HARD CODED USER
+      ownerId: localStorage.getItem("userId"), //CHANGE HARD CODED USER
       docId: docId,
       email: $("#email").val().toLowerCase(),
       role: $("#roles").find(":selected").val().toUpperCase(),

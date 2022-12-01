@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { serverAddress } from "./constants";
 import { redirect, redirectToDoc } from "./router";
+import { openConnection } from "./sockets";
 
 let currentDirId = 1;
 const ull = $("#ull");
@@ -62,6 +63,9 @@ const getChildren = (id) => {
               })
               .then((response) => {
                 if (response.success) {
+                  localStorage.setItem("docId", parseInt(inodeId))
+                  openConnection();
+
                   redirectToDoc(
                     "/editing_doc",
                     inodeId,
