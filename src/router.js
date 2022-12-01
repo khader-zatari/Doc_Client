@@ -28,7 +28,9 @@ const routes = {
   404: "templates/404.html",
   "/": {
     url: "templates/home.html",
-    action: () => {},
+    action: () => {
+      //cleanUserSession();
+    },
   },
   "/register": {
     url: "templates/register.html",
