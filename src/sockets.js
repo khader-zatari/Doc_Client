@@ -5,7 +5,8 @@ import { Stomp } from '@stomp/stompjs';
 
 import { serverAddress } from "./constants"
 import { update, addViewingUser } from './doc-functions';
-let docId = 70;
+
+let docId = localStorage.getItem("docId");
 let stompClient;
 const socketFactory = () => {
     return new SockJS(serverAddress + '/ws');
@@ -56,4 +57,4 @@ const removeUser = (user) => {
     }))
 }
 
-export { openConnection, addUpdate, sendName ,removeUser}
+export { openConnection, addUpdate, sendName, removeUser }

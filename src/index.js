@@ -13,4 +13,4 @@ import "./_custom.css";
 require("bootstrap-icons/font/bootstrap-icons.css");
 
 //--Sockets-------------------------------------
-openConnection();
+// openConnection();
