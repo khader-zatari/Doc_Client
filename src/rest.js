@@ -64,11 +64,15 @@ const userLogin = (user) => {
     });
 };
 
-//--Document-----------------------------------------------------------------------------------
+//--Get Document--------------------------------------------------------------------------------
 const getDocument = (docId) => {
   return new Promise((resolve, reject) => {
     fetch(serverAddress + "/doc/" + docId, {
       method: "GET",
+      headers: {
+        userId: localStorage.getItem("userId"),
+        token: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         return resolve(response.json());
@@ -90,6 +94,8 @@ const changeUserRole = (roleForm) => {
     }),
     headers: {
       "Content-Type": "application/json",
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
     },
   })
     .then((response) => {

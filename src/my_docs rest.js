@@ -11,11 +11,15 @@ const getChildren = (id) => {
   console.log("GETTING CHILDREN OF INODE" + id);
   fetch(serverAddress + "/fs/level", {
     method: "POST",
+    // mode: "no-cors",
     body: JSON.stringify({
       id: id,
     }),
+    headers: myHeaders,
     headers: {
       "Content-Type": "application/json",
+      // userId: localStorage.getItem("userId"),
+      // token: localStorage.getItem("token"),
     },
   })
     .then((response) => {
@@ -56,6 +60,8 @@ const getChildren = (id) => {
               }),
               headers: {
                 "Content-Type": "application/json",
+                userId: localStorage.getItem("userId"),
+                token: localStorage.getItem("token"),
               },
             })
               .then((response) => {
@@ -63,7 +69,7 @@ const getChildren = (id) => {
               })
               .then((response) => {
                 if (response.success) {
-                  localStorage.setItem("docId", parseInt(inodeId))
+                  localStorage.setItem("docId", parseInt(inodeId));
                   openConnection();
 
                   redirectToDoc(
@@ -123,6 +129,10 @@ const uploadFile = (formData) => {
   fetch(serverAddress + "/fs/uploadFile", {
     method: "POST",
     body: formData,
+    headers: {
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
+    },
   })
     .then((response) => response.json())
     .then((result) => {
