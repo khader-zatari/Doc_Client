@@ -6,96 +6,102 @@ let isDelete = false;
 const startEditingDoc = (docId, userId, userRole) => {
   //delete user id( it's in local storage)
   getDocument(docId)
-    .then((data) => {
-      console.log("doc data", data);
-      sendName(localStorage.getItem("userName"));
-      $("#doc-id").text(data.id);
-      $("#doc-title").text(data.name);
-      $("#doc-last-edited").text(data.lastEdited);
-      $("#main-doc-content").text(data.content);
-      $("#your-role").text(userRole + " Mode");
+    .then((response) => {
+      if (response.success) {
+        console.log("doc data", response.data);
+        sendName(localStorage.getItem("userName"));
+        $("#doc-id").text(response.data.id);
+        $("#doc-title").text(response.data.name);
+        $("#doc-last-edited").text(response.data.lastEdited);
+        $("#main-doc-content").text(response.data.content);
+        $("#your-role").text(userRole + " Mode");
 
-      //text area is readonly for viewer
-      if (userRole.toUpperCase() === "VIEWER") {
-        $("#main-doc-content").prop("readonly", true);
-      }
-
-      //check if not owner - hide the change role form
-      console.log(
-        "user connedted: " +
-        localStorage.getItem("userId") +
-        " Owner id: " +
-        data.owner.id
-      );
-      if (localStorage.getItem("userId") != data.owner.id) {
-        $("#change-role-form").hide();
-      } else {
-        $("#change-role-form").show();
-
-      }
-      let input = $("#main-doc-content");
-      let start;
-      let end;
-      let didIdelete = false;
-      let nameIsSent = false;
-      input.on("keydown", (event) => {
-        if (!nameIsSent) {
-          // sendName($("#userInput").val());
-          // sendName(localStorage.getItem("userName"));
-          nameIsSent = true;
+        //text area is readonly for viewer
+        if (userRole.toUpperCase() === "VIEWER") {
+          $("#main-doc-content").prop("readonly", true);
         }
-        start = input.prop("selectionStart");
-        end = input.prop("selectionEnd");
-        var key = event.keyCode || event.charCode;
-        if (key == 8 || key == 46) {
-          if (start - 1 >= -1 && end - 1 >= 0) {
+
+        //check if not owner - hide the change role form
+        console.log(
+          "user connedted: " +
+            localStorage.getItem("userId") +
+            " Owner id: " +
+            response.data.owner.id
+        );
+        if (localStorage.getItem("userId") != response.data.owner.id) {
+          $("#change-role-form").hide();
+        } else {
+          $("#change-role-form").show();
+        }
+        let input = $("#main-doc-content");
+        let start;
+        let end;
+        let didIdelete = false;
+        let nameIsSent = false;
+        input.on("keydown", (event) => {
+          if (!nameIsSent) {
+            // sendName($("#userInput").val());
+            // sendName(localStorage.getItem("userName"));
+            nameIsSent = true;
+          }
+          start = input.prop("selectionStart");
+          end = input.prop("selectionEnd");
+          var key = event.keyCode || event.charCode;
+          if (key == 8 || key == 46) {
+            if (start - 1 >= -1 && end - 1 >= 0) {
+              if (start == end) {
+                addUpdate(
+                  localStorage.getItem("userId"),
+                  "DELETE",
+                  null,
+                  start - 1,
+                  end - 1
+                );
+              } else {
+                addUpdate(
+                  localStorage.getItem("userId"),
+                  "DELETE_RANGE",
+                  null,
+                  start - 1,
+                  end - 1
+                );
+              }
+              didIdelete = true;
+            }
+          }
+        });
+
+        input.on("input", (event) => {
+          if (!didIdelete) {
+            console.log(didIdelete);
             if (start == end) {
               addUpdate(
-                localStorage.getItem('userId'),
-                "DELETE",
-                null,
-                start - 1,
-                end - 1
+                localStorage.getItem("userId"),
+                "APPEND",
+                event.originalEvent.response.data,
+                end,
+                end
               );
             } else {
               addUpdate(
-                localStorage.getItem('userId'),
-                "DELETE_RANGE",
-                null,
+                localStorage.getItem("userId"),
+                "APPEND_RANGE",
+                event.originalEvent.response.data,
                 start - 1,
                 end - 1
               );
             }
-            didIdelete = true;
           }
-        }
-      });
-
-      input.on("input", (event) => {
-        if (!didIdelete) {
-          console.log(didIdelete);
-          if (start == end) {
-            addUpdate(
-              localStorage.getItem('userId'),
-              "APPEND",
-              event.originalEvent.data,
-              end,
-              end
-            );
-          } else {
-            addUpdate(
-              localStorage.getItem('userId'),
-              "APPEND_RANGE",
-              event.originalEvent.data,
-              start - 1,
-              end - 1
-            );
-          }
-        }
-        didIdelete = false;
-      });
+          didIdelete = false;
+        });
+      } else {
+        alert(response.message);
+      }
     })
-    .catch((err) => console.log(err));
+
+    .catch((error) => {
+      console.error(`ERROR: ${error}`);
+    });
 };
 
 // $(() => {
