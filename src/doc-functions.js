@@ -78,7 +78,7 @@ const startEditingDoc = (docId, userId, userRole) => {
               addUpdate(
                 localStorage.getItem("userId"),
                 "APPEND",
-                event.originalEvent.response.data,
+                event.originalEvent.data,
                 end,
                 end
               );
@@ -86,7 +86,7 @@ const startEditingDoc = (docId, userId, userRole) => {
               addUpdate(
                 localStorage.getItem("userId"),
                 "APPEND_RANGE",
-                event.originalEvent.response.data,
+                event.originalEvent.data,
                 start - 1,
                 end - 1
               );
