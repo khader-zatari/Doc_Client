@@ -1,5 +1,6 @@
 import { serverAddress } from "./constants";
 import { update } from "./doc-functions";
+import { initGreeting } from "./greeting";
 import { redirect } from "./router";
 
 //--Registration-----------------------------------------------------------------------------------
@@ -53,6 +54,7 @@ const userLogin = (user) => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.id);
         localStorage.setItem("userName", response.data.name);
+        initGreeting();
         alert("Login successful, redirecting to your docs...");
         redirect("/my_docs");
       } else {
