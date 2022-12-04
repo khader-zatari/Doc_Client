@@ -35,7 +35,7 @@ const getChildren = (id) => {
           li.setAttribute("id", `${inode.id}`);
           li.setAttribute("type", `${inode.type}`);
           li.setAttribute("name", `${inode.name}`);
-          li.onclick = function () {
+          li.ondblclick = function () {
             let inodeId = li.getAttribute("id");
             console.log(
               "inode clicked " + inodeId + " type: " + li.getAttribute("class")
