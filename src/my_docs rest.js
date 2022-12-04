@@ -8,7 +8,8 @@ const ull = $("#ull");
 const list = document.createDocumentFragment();
 
 const getChildren = (id) => {
-  console.log(">>>>>>>>>GETTING CHILDREN OF INODE" + id);
+  currentDirId = id;
+  console.log(">>>>GETTING CHILDREN OF INODE" + id);
   fetch(serverAddress + "/fs/level", {
     method: "POST",
     body: JSON.stringify({
@@ -45,7 +46,6 @@ const getChildren = (id) => {
               $("#ull").empty();
               $("#path").append(li.getAttribute("name") + "/");
               getChildren(inodeId);
-              currentDirId = inodeId;
               //console.log("Current dir id changed:" + currentDirId);
             } else {
               //permission check before opening a document
