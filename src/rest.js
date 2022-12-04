@@ -1,5 +1,6 @@
 import { serverAddress } from "./constants";
 import { update } from "./doc-functions";
+import { initGreeting } from "./greeting";
 import { redirect } from "./router";
 
 //--Registration-----------------------------------------------------------------------------------
@@ -53,6 +54,7 @@ const userLogin = (user) => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.id);
         localStorage.setItem("userName", response.data.name);
+        initGreeting();
         alert("Login successful, redirecting to your docs...");
         redirect("/my_docs");
       } else {
@@ -64,11 +66,15 @@ const userLogin = (user) => {
     });
 };
 
-//--Document-----------------------------------------------------------------------------------
+//--Get Document--------------------------------------------------------------------------------
 const getDocument = (docId) => {
   return new Promise((resolve, reject) => {
     fetch(serverAddress + "/doc/" + docId, {
       method: "GET",
+      headers: {
+        userId: localStorage.getItem("userId"),
+        token: localStorage.getItem("token"),
+      },
     })
       .then((response) => {
         return resolve(response.json());
@@ -90,12 +96,23 @@ const changeUserRole = (roleForm) => {
     }),
     headers: {
       "Content-Type": "application/json",
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
     },
   })
     .then((response) => {
       return response.json();
     })
-    .catch(() => {}); //TODO: handle error messages
+    .then((response) => {
+      if (response.success) {
+        alert("Role changed to: " + response.data.userRole);
+      } else {
+        alert(response.message);
+      }
+    })
+    .catch((error) => {
+      console.error(`ERROR: ${error}`);
+    });
 };
 
 export { createUser, getDocument, changeUserRole, userLogin };
