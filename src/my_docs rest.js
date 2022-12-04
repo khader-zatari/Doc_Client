@@ -17,6 +17,8 @@ const getChildren = (id) => {
     }),
     headers: {
       "Content-Type": "application/json",
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
     },
   })
     .then((response) => {
@@ -149,4 +151,48 @@ const uploadFile = (formData) => {
     });
 };
 
-export { getChildren, initImport };
+const initAddDir = () => {
+  $("#addDirBtn").on("click", function (event) {
+    event.preventDefault();
+    const addDir = {
+      userId: localStorage.getItem("userId"),
+      name: $("#directoryName").val(),
+      type: "DIR",
+    };
+    console.log("Adding a new dir: " + addDir);
+    addDirectory(addDir);
+  });
+};
+
+const addDirectory = (addDir) => {
+  console.log("REST-Add DIR- START...");
+  fetch(serverAddress + "/fs/add", {
+    method: "POST",
+    body: JSON.stringify({
+      userId: addDir.userId,
+      name: addDir.name,
+      type: addDir.type,
+      parentId: currentDirId,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      if (response.success) {
+        alert("New directory added: " + response.data.name);
+      } else {
+        alert(response.message);
+      }
+    })
+    .catch((error) => {
+      console.error(`ERROR: ${error}`);
+    });
+};
+
+export { getChildren, initImport, initAddDir };
