@@ -8,7 +8,7 @@ const ull = $("#ull");
 const list = document.createDocumentFragment();
 
 const getChildren = (id) => {
-  console.log("GETTING CHILDREN OF INODE" + id);
+  console.log(">>>>>>>>>GETTING CHILDREN OF INODE" + id);
   fetch(serverAddress + "/fs/level", {
     method: "POST",
     body: JSON.stringify({
@@ -101,6 +101,7 @@ const getChildren = (id) => {
           li.appendChild(type);
           list.appendChild(li);
         });
+        $("#ull").append(list);
       } else {
         alert(response.message);
       }
@@ -108,7 +109,6 @@ const getChildren = (id) => {
     .catch((error) => {
       console.error(`ERROR: ${error}`);
     });
-  $("#ull").append(list);
 };
 
 const initImport = () => {
