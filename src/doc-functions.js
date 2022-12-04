@@ -213,7 +213,7 @@ const update = (updateData) => {
   if (user != updateData.userId) {
     textArea.val(updateData.documentText);
 
-    if (updateData.updateType == "APPEND") {
+    if (updateData.updateTypeDTO == "APPEND") {
       if (updateData.startPosition < start) {
         start = start + (updateData.endPosition - updateData.startPosition + 1);
         console.log(start);
@@ -222,7 +222,7 @@ const update = (updateData) => {
       } else {
         textArea[0].setSelectionRange(start, start);
       }
-    } else if (updateData.updateType == "DELETE") {
+    } else if (updateData.updateTypeDTO == "DELETE") {
       if (updateData.startPosition < start) {
         start = start - (updateData.endPosition - updateData.startPosition + 1);
         console.log(start);
@@ -232,8 +232,8 @@ const update = (updateData) => {
         textArea[0].setSelectionRange(start, start);
       }
     } else if (
-      updateData.updateType == "DELETE_RANGE" ||
-      updateData.updateType == "APPEND_RANGE"
+      updateData.updateTypeDTO == "DELETE_RANGE" ||
+      updateData.updateTypeDTO == "APPEND_RANGE"
     ) {
       if (
         updateData.startPosition < start - 1 &&
