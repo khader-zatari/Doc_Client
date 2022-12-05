@@ -4,7 +4,7 @@ import { getDocument } from "./rest";
 import $ from "jquery";
 import { initRegister } from "./register";
 import { initLogin } from "./login";
-import { initImport } from "./my_docs rest";
+import { initImport, initAddDir } from "./my_docs rest";
 import { initGreeting } from "./greeting";
 
 const route = (event) => {
@@ -50,6 +50,7 @@ const routes = {
     action: () => {
       getChildren(1);
       initImport();
+      initAddDir();
     },
   },
   "/editing_doc": {
