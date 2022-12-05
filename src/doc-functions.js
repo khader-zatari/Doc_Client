@@ -13,7 +13,7 @@ const startEditingDoc = (docId, userId, userRole) => {
         $("#doc-id").text(response.data.id);
         $("#doc-title").text(response.data.name);
         $("#doc-last-edited").text(response.data.lastEdited);
-        $("#main-doc-content").text(response.data.content);
+        $("#main-doc-content").val(response.data.content);
         $("#your-role").text(userRole + " Mode");
 
         //text area is readonly for viewer
