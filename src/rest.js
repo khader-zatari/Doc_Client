@@ -77,6 +77,7 @@ const getDocument = (docId) => {
       },
     })
       .then((response) => {
+        console.log(response);
         return resolve(response.json());
       })
       .catch((err) => reject(err));
