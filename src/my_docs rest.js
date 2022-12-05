@@ -134,6 +134,10 @@ const uploadFile = (formData) => {
   fetch(serverAddress + "/fs/uploadFile", {
     method: "POST",
     body: formData,
+    headers: {
+      userId: localStorage.getItem("userId"),
+      token: localStorage.getItem("token"),
+    },
   })
     .then((response) => {
       return response.json();
