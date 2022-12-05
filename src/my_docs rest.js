@@ -69,7 +69,7 @@ const getChildren = (id) => {
                 .then((response) => {
                   if (response.success) {
                     localStorage.setItem("docId", parseInt(inodeId));
-                    openConnection();
+                    // openConnection();
 
                     redirectToDoc(
                       "/editing_doc",
